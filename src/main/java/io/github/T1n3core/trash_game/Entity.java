@@ -16,12 +16,6 @@ public abstract class Entity {
         this.sprite = sprite;
     }
 
-    protected void move(int dx, int dy) {
-        x += dx;
-        y += dy;
-        hitbox.setLocation(x, y);
-    }
-
     public int getX() {
         return x;
     }
