@@ -32,5 +32,5 @@ public abstract class Entity {
         return sprite;
     }
 
-    public abstract void update();
+    public abstract void update(GameState state);
 }
