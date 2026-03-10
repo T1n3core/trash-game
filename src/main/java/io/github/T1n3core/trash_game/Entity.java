@@ -4,33 +4,41 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 public abstract class Entity {
-    private int x;
-    private int y;
-    private final Rectangle hitbox;
-    private final BufferedImage sprite;
+	private int x;
+	private int y;
+	private final Rectangle hitbox;
+	private final BufferedImage sprite;
 
-    protected Entity(int x, int y, int width, int height, BufferedImage sprite) {
-        this.x = x;
-        this.y = y;
-        this.hitbox = new Rectangle(x, y, width, height);
-        this.sprite = sprite;
-    }
+	protected Entity(int x, int y, int width, int height, BufferedImage sprite) {
+		this.x = x;
+		this.y = y;
+		this.hitbox = new Rectangle(x, y, width, height);
+		this.sprite = sprite;
+	}
 
-    public int getX() {
-        return x;
-    }
+	public int getX() {
+		return x;
+	}
 
-    public int getY() {
-        return y;
-    }
+	public int getY() {
+		return y;
+	}
 
-    public Rectangle getHitbox() {
-        return new Rectangle(hitbox);
-    }
+	public Rectangle getHitbox() {
+		return new Rectangle(hitbox);
+	}
 
-    public BufferedImage getSprite() {
-        return sprite;
-    }
+	public BufferedImage getSprite() {
+		return sprite;
+	}
 
-    public abstract void update(GameState state);
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public abstract void update(GameState state);
 }

@@ -1,26 +1,39 @@
 package io.github.T1n3core.trash_game;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 
 public class Player extends Entity implements Movable, Shoots {
-    public Player(int x, int y) {
-        BufferedImage img;
-        try {
-            img = ImageIO.read(new File("player.png"));
-        } catch (Exception e) {
-            System.err.println("Could not load player sprite");
-            e.printStackTrace();
-            throw new IllegalStateException("Player does not exist");
-        }
-        super(x, y, img.getWidth(), img.getHeight(), img);
-    }
+	private int movement;
+	private static final int movementSpeed = 10;
 
-    @Override
-    public void update(GameState state) {
-        if (state.moveLeft()) {
-            
-        }
-    }
+	public Player(int x, int y, BufferedImage sprite) {
+		super(x, y, sprite.getWidth(), sprite.getHeight(), sprite);
+	}
+
+	@Override
+	public void update(GameState state) {
+		handleInput(state);
+		move();
+		movement = 0;
+	}
+
+	@Override
+	public void move() {
+		setX(this.getX() + movement);
+	}
+
+	private void handleInput(GameState state) {
+		if (state.moveLeft()) {
+			movement -= movementSpeed;
+		}
+
+		if (state.moveRight()) {
+			movement += movementSpeed;
+		}
+	}
+
+	@Override
+	public void shoot() {
+		// TODO: implement shoot()
+	}
 }
