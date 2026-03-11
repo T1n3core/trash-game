@@ -1,16 +1,11 @@
 package io.github.T1n3core.trash_game;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-
-import javax.imageio.ImageIO;
-
 public class Player extends Entity implements Movable, Shoots {
 	private int movement;
 	private static final int movementSpeed = 10;
 
-	public Player(int x, int y, BufferedImage sprite) {
-		super(x, y, sprite.getWidth(), sprite.getHeight(), sprite);
+	public Player(int x, int y) {
+		super(x, y, ResourceCache.PLAYER.getWidth(), ResourceCache.PLAYER.getHeight(), ResourceCache.PLAYER);
 	}
 
 	@Override
@@ -49,11 +44,7 @@ public class Player extends Entity implements Movable, Shoots {
 		int projectileX = getX() + getHitbox().width / 2;
 		int projectileY = getY();
 
-		try { // TODO constant projectile sprites to reduce syscall overhead
-			Projectile projectile = new Projectile(this, projectileX, projectileY, ImageIO.read(new File("player_projectile.png")));
-			state.spawn(projectile);
-		} catch (Exception e) {
-			System.err.println("Could not load player projectile sprite, projectile will not be created");
-		}
+		Projectile projectile = new Projectile(this, projectileX, projectileY, ResourceCache.PLAYER); // TODO add actual player projectile resource to the resources folder
+		state.spawn(projectile);
 	}
 }

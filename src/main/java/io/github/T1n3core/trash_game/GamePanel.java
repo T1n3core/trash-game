@@ -3,9 +3,6 @@ package io.github.T1n3core.trash_game;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
@@ -13,7 +10,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private boolean running;
     private GameState gameState;
 
-    public GamePanel() throws IOException {
+    public GamePanel() {
         setFocusable(true);
         addKeyListener(this);
 
@@ -21,7 +18,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         running = true;
 
-        gameState.spawn(new Player(600, 400, ImageIO.read(new File("player.png"))));
+        gameState.spawn(new Player(600, 400));
 
         gameThread = new Thread(this);
         gameThread.start();

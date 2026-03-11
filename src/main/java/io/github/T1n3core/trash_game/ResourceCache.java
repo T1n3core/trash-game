@@ -6,19 +6,25 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public final class ResourceCache {
-    public final BufferedImage player;
-    public final BufferedImage bio;
-    public final BufferedImage paper;
-    public final BufferedImage plastic;
-    public final BufferedImage plane;
-    public final BufferedImage seed;
+    public static final BufferedImage PLAYER;
+    public static final BufferedImage BIO;
+    public static final BufferedImage PAPER;
+    public static final BufferedImage PLASTIC;
+    public static final BufferedImage PLANE;
+    public static final BufferedImage SEED;
 
-    public ResourceCache() throws IOException {
-        player = ImageIO.read(new File("player.png"));
-        bio = ImageIO.read(new File("bio.png"));
-        paper = ImageIO.read(new File("paper.png"));
-        plastic = ImageIO.read(new File("plastic.png"));
-        plane = ImageIO.read(new File("plane.png"));
-        seed = ImageIO.read(new File("seed.png"));
+    static {
+        try {
+            PLAYER = ImageIO.read(new File("player.png"));
+            BIO = ImageIO.read(new File("bio.png"));
+            PAPER = ImageIO.read(new File("paper.png"));
+            PLASTIC = ImageIO.read(new File("plastic.png"));
+            PLANE = ImageIO.read(new File("plane.png"));
+            SEED = ImageIO.read(new File("seed.png"));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load resources", e);
+        }
     }
+
+    private ResourceCache() {}
 }
