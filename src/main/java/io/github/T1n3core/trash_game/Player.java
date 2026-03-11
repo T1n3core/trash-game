@@ -14,6 +14,7 @@ public class Player extends Entity implements Movable, Shoots {
 	public void update(GameState state) {
 		handleInput(state);
 		move();
+		shoot(state);
 		movement = 0;
 	}
 
