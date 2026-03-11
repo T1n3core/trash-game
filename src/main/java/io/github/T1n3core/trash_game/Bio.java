@@ -12,7 +12,6 @@ public class Bio extends Enemy implements Shoots {
 
     @Override
     public void shoot(GameState state) {
-        // TODO Implement shoot(), this enemy type should shoot 3 at once like a shotgun
         if (Math.random() > 0.02) {
             return;
         }
@@ -23,9 +22,12 @@ public class Bio extends Enemy implements Shoots {
         int[] offsets = {-15, 0, 15};
         
         for (int offset : offsets) {
-            Projectile projectile = new Projectile(this, centerX + offset, projectileY, getSprite());
-
-            state.spawn(projectile);
+            try {
+                Projectile projectile = new Projectile(this, centerX + offset, projectileY, ImageIO.read(new File("seed.png")));
+                state.spawn(projectile);
+            } catch (Exception e) {
+                System.err.println("Could not load bio projectile sprite, projectile will not be created");
+            }
         }
     }
 }
