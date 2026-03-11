@@ -3,12 +3,14 @@ package io.github.T1n3core.trash_game;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
     private Thread gameThread;
     private boolean running;
     private GameState gameState;
+    private boolean gameOver = false;
 
     public GamePanel() {
         setFocusable(true);
@@ -26,9 +28,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void run() {
-        while (running) { 
+        
+        while (running) {
+            
+            boolean playerAlive = false;
+
             for (Entity e : gameState.getEntities()) {
+                if (e instanceof Player) {
+                    playerAlive = true;
+                }
+
                 e.update(gameState);
+            }
+
+            if (!playerAlive) {
+                gameOver();
             }
 
             repaint();
@@ -47,10 +61,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         for (Entity e : gameState.getEntities()) {
             g.drawImage(e.getSprite(), e.getX(), e.getY(), null);
         }
+
+        if (gameOver) {
+            g.setFont(g.getFont().deriveFont(48f));
+            g.drawString("GAME OVER", getWidth() / 2 - 150, getHeight() / 2);
+        }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
+
+        if (gameOver) {
+            return;
+        }
+
         if (e.getKeyCode() == KeyEvent.VK_A) {
             gameState.setMoveLeft(true);
         }
@@ -100,4 +124,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public void keyTyped(KeyEvent e) {}
 
     // TODO implement a game over method
+    private void gameOver() {
+        gameOver = true;
+        running = false;
+    }
 }
