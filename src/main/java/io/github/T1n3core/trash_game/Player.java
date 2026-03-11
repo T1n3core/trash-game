@@ -2,11 +2,14 @@ package io.github.T1n3core.trash_game;
 
 public class Player extends Entity implements Movable, Shoots {
 	private int movement;
-	private static final int movementSpeed = 10;
+	private int firingCooldown;
+	private static final int MOVEMENT_SPEED = 10;
 	public static final Team team = Team.FRIENDLY;
 
 	public Player(int x, int y) {
 		super(x, y, ResourceCache.PLAYER.getWidth(), ResourceCache.PLAYER.getHeight(), ResourceCache.PLAYER);
+		movement = 0;
+		firingCooldown = 0;
 	}
 
 	@Override
@@ -15,6 +18,7 @@ public class Player extends Entity implements Movable, Shoots {
 		move();
 		shoot(state);
 		movement = 0;
+		firingCooldown--;
 	}
 
 	@Override
@@ -25,11 +29,11 @@ public class Player extends Entity implements Movable, Shoots {
 
 	private void handleInput(GameState state) {
 		if (state.moveLeft()) {
-			movement -= movementSpeed;
+			movement -= MOVEMENT_SPEED;
 		}
 
 		if (state.moveRight()) {
-			movement += movementSpeed;
+			movement += MOVEMENT_SPEED;
 		}
 	}
 
@@ -39,7 +43,9 @@ public class Player extends Entity implements Movable, Shoots {
 			return;
 		}
 
-		// TODO add a firing cooldown
+		if (firingCooldown != 0) {
+			return;
+		}
 
 		int projectileX = getX() + getHitbox().width / 2;
 		int projectileY = getY();
