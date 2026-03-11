@@ -35,12 +35,12 @@ public class Player extends Entity implements Movable, Shoots {
 	@Override
 	public void shoot(GameState state) {
 		
-		if (Math.random() > 0.01) {
+		if (!state.shoot()) {
 			return;
 		}
 
 		int projectileX = getX() + getHitbox().width / 2;
-		int projectileY = getY() + getHitbox().height;
+		int projectileY = getY();
 
 		Projectile projectile = new Projectile(this, projectileX, projectileY, getSprite()); // Replace getSprite() later with projectile sprite
 
