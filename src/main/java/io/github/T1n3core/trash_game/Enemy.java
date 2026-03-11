@@ -23,7 +23,7 @@ public class Enemy extends Entity implements Movable {
 	}
 
 	@Override
-	public void move() {
+	public void move() { // TODO make enemies move in a formation
 		int newX = getX() + direction * SPEED;
 
 		if (newX <= 0 || newX >= GameConfig.SCREEN_WIDTH - getHitbox().width) {

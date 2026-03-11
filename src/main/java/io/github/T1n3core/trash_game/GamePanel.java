@@ -93,7 +93,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    private void updateGame() {
+    private void updateGame() { // TODO integrate spawning into the actual game loop and add difficulty progression
         gameState.commit();
 
         boolean playerAlive = false;
