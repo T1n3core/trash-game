@@ -18,6 +18,9 @@ public class Projectile extends Entity implements Movable {
     public void update(GameState state) {
         move();
         checkCollisions(state);
+        if (getY() < 0 || getY() > GameConfig.SCREEN_HEIGHT) {
+            state.kill(this);
+        }
     }
 
     @Override
@@ -44,9 +47,6 @@ public class Projectile extends Entity implements Movable {
                 state.kill(this);
             }
 
-            if (getY() < 0 || getY() > GameConfig.SCREEN_HEIGHT) {
-                state.kill(this);
-            }
         }
     }
 
