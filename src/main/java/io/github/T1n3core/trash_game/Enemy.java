@@ -3,10 +3,10 @@ package io.github.T1n3core.trash_game;
 import java.awt.image.BufferedImage;
 
 public class Enemy extends Entity implements Movable {
-	private int direction = 1; // 1 = right, -1 = left
-	private final int speed = 2;
 
-	private static final int SCREEN_WIDTH = 800; // TODO might be worth making a game config class
+	private static int direction = 1;
+	private static final int SPEED = 2;
+	private static final int DROP_DISTANCE = 40;
 
 	protected Enemy(int x, int y, BufferedImage sprite) {
 		super(x, y, sprite.getWidth(), sprite.getHeight(), sprite);
@@ -22,13 +22,12 @@ public class Enemy extends Entity implements Movable {
 	}
 
 	@Override
-	public void move() { // TODO implement movement in formations	
-		int newX = getX() + direction * speed;
+	public void move() {
+		int newX = getX() + direction * SPEED;
 
-		// temporary hardcode
-		if (newX <= 0 || newX >= SCREEN_WIDTH) {
+		if (newX <= 0 || newX >= GameConfig.SCREEN_WIDTH - getHitbox().width) {
 			direction *= -1;
-			setY(getY() + 40);
+			setY(getY() + DROP_DISTANCE);
 		} else {
 			setX(newX);
 		}
