@@ -3,14 +3,11 @@ package io.github.T1n3core.trash_game;
 import java.awt.image.BufferedImage;
 
 public class Projectile extends Entity implements Movable {
-
-    private final Entity owner;
     private static final int movementSpeed = 25;
     private final Team team;
 
     public Projectile(Entity owner, int x, int y, BufferedImage sprite) {
         super(x, y, sprite.getWidth(), sprite.getHeight(), sprite);
-        this.owner = owner;
         this.team = owner.team();
     }
 
@@ -25,7 +22,7 @@ public class Projectile extends Entity implements Movable {
 
     @Override
     public void move() {
-        if (owner instanceof Player) {
+        if (team == Team.FRIENDLY) {
             setY(getY() - movementSpeed);
         } else {
             setY(getY() + movementSpeed);

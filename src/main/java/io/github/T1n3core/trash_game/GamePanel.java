@@ -53,6 +53,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        g.drawImage(ResourceCache.BACKGROUND, 0, 0, getWidth(), getHeight(), null);
+
         for (Entity e : gameState.getEntities()) {
             g.drawImage(e.getSprite(), e.getX(), e.getY(), null);
         }
