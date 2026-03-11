@@ -10,7 +10,7 @@ public class Bio extends Enemy implements Shoots {
     }
 
     @Override
-    public void shoot() {
+    public void shoot(GameState state) {
         // TODO Implement shoot(), this enemy type should shoot 3 at once like a shotgun
         
     }
