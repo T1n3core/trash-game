@@ -76,6 +76,4 @@ public class GameState {
 	public int getScore() {
 		return score;
 	}
-
-    // TODO add a score tracking system, could need a separate class
 }
