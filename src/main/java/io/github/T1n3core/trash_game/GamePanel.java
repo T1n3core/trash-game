@@ -75,55 +75,46 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             return;
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            gameState.setMoveLeft(true);
-        }
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_A:
+            case KeyEvent.VK_LEFT:
+                gameState.setMoveLeft(true);
+                break;
 
-        if (e.getKeyCode() == KeyEvent.VK_D) {
-            gameState.setMoveRight(true);
-        }
+            case KeyEvent.VK_D:
+            case KeyEvent.VK_RIGHT:
+                gameState.setMoveRight(true);
+                break;
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            gameState.setShoot(true);
+            case KeyEvent.VK_SPACE:
+                gameState.setShoot(true);
+                break;
         }
-
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            gameState.setMoveLeft(true);
-        }
-
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            gameState.setMoveRight(true);
-        }
-        // TODO possibly rewrite this with switch case statement instead
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_A) {
-            gameState.setMoveLeft(false);
-        }
 
-        if (e.getKeyCode() == KeyEvent.VK_D) {
-            gameState.setMoveRight(false);
-        }
-        
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            gameState.setShoot(false);
-        }
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_A:
+            case KeyEvent.VK_LEFT:
+                gameState.setMoveLeft(false);
+                break;
 
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            gameState.setMoveLeft(false);
-        }
+            case KeyEvent.VK_D:
+            case KeyEvent.VK_RIGHT:
+                gameState.setMoveRight(false);
+                break;
 
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            gameState.setMoveRight(false);
+            case KeyEvent.VK_SPACE:
+                gameState.setShoot(false);
+                break;
         }
     }
 
     @Override
     public void keyTyped(KeyEvent e) {}
 
-    // TODO implement a game over method
     private void gameOver() {
         gameOver = true;
         running = false;
