@@ -1,10 +1,12 @@
 package io.github.T1n3core.trash_game;
 
-import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class Paper extends Enemy implements Shoots {
-	public Paper(int x, int y, BufferedImage sprite) {
-		super(x, y, sprite);
+	public Paper(int x, int y) throws IOException {
+		super(x, y, ImageIO.read(new File("paper.png")));
 	}
 
 	@Override
