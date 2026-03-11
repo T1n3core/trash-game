@@ -44,7 +44,11 @@ public class GameState {
 		entities.remove(e);
 	}
 
+	public void spawn(Entity e) {
+		entities.add(e);
+	}
+
 	public List<Entity> getEntities() {
-		return List.copyOf(entities);
+		return entities;
 	}
 }
