@@ -61,6 +61,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             g.setFont(g.getFont().deriveFont(48f));
             g.drawString("GAME OVER", getWidth() / 2 - 150, getHeight() / 2);
         }
+
+        g.setFont(g.getFont().deriveFont(20f));
+        g.drawString("Score: " + gameState.getScore(), 20, 30);
     }
 
     @Override

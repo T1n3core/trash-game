@@ -3,6 +3,7 @@ package io.github.T1n3core.trash_game;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
+
 import javax.swing.JFrame;
 
 public class Game extends JFrame {
