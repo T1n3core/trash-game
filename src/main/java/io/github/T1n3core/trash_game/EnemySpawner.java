@@ -4,12 +4,12 @@ import java.io.IOException;
 
 public class EnemySpawner {
 
-    private static int startX = 100;
-    private static int startY = 50;
+    private static final int startX = 100;
+    private static final int startY = 50;
 
-    private static int columns = 8;
-    private static int spacingX = 70;
-    private static int spacingY = 60;
+    private static final int columns = 8;
+    private static final int spacingX = 70;
+    private static final int spacingY = 60;
 
     public static void spawnWavePaper(GameState state) {
         try {

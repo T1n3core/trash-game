@@ -23,8 +23,9 @@ public class Player extends Entity implements Movable, Shoots {
 
 	@Override
 	public void move() {
-		setX(this.getX() + movement);
-		// TODO add boundary checks to prevent off screening
+		int screenWidth = 800; // TODO move to config class
+		int newX = Math.max(0, Math.min(getX() + movement, screenWidth - getHitbox().width));
+		setX(newX);
 	}
 
 	private void handleInput(GameState state) {
