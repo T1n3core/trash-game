@@ -10,9 +10,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
-    private Thread gameThread;
-    private boolean running;
-    private GameState gameState;
+    private final Thread gameThread;
+    private final boolean running;
+    private final GameState gameState;
 
     public GamePanel() throws IOException {
         setFocusable(true);

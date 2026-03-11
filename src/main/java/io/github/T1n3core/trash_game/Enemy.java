@@ -3,8 +3,11 @@ package io.github.T1n3core.trash_game;
 import java.awt.image.BufferedImage;
 
 public class Enemy extends Entity implements Movable {
+
 	private int direction = 1; // 1 = right, -1 = left
-	private int speed = 2;
+	private final int speed = 2;
+
+	private static final int SCREEN_WIDTH = 800; // Change when GamePanel configured
 
 	protected Enemy(int x, int y, BufferedImage sprite) {
 		super(x, y, sprite.getWidth(), sprite.getHeight(), sprite);
@@ -13,13 +16,19 @@ public class Enemy extends Entity implements Movable {
 	@Override
 	public void update(GameState state) {
 		move();
+
+		if (this instanceof Shoots shooter) {
+			shooter.shoot(state);
+		}
 	}
 
 	@Override
 	public void move() {
+		
 		int newX = getX() + direction * speed;
 
-		if (newX <= 0 || newX >= 800) {
+		// Screen bounds
+		if (newX <= 0 || newX >= SCREEN_WIDTH) {
 			direction *= -1;
 			setY(getY() + 40);
 		} else {
