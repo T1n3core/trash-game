@@ -13,7 +13,7 @@ public class Paper extends Enemy implements Shoots {
 			return;
 		}
 
-		int projectileX = getX() + getHitbox().width / 2;
+		int projectileX = getX() + getHitbox().width / 2 - 5; // Assuming a 10px projectile
 		int projectileY = getY() + getHitbox().height;
 
 		Projectile projectile = new Projectile(this, projectileX, projectileY, getSprite());
