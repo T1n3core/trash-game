@@ -13,6 +13,7 @@ public final class ResourceCache {
     public static final BufferedImage PLANE;
     public static final BufferedImage SEED;
     public static final BufferedImage BACKGROUND;
+    public static final BufferedImage ICON;
 
     static {
         try {
@@ -23,6 +24,7 @@ public final class ResourceCache {
             PLANE = load("plane.png");
             SEED = load("seed.png");
             BACKGROUND = load("background.png");
+            ICON = load ("game_icon.png");
         } catch (IOException e) {
             throw new RuntimeException("Failed to load resources", e);
         }

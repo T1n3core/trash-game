@@ -14,7 +14,9 @@ public class Game extends JFrame {
 
         GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         device.setFullScreenWindow(this);
-
+        
+        setIconImage(ResourceCache.ICON);
+        setTitle("Trash Game");
         add(new GamePanel());
     }
 }
