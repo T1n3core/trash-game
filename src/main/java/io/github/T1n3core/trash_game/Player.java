@@ -18,8 +18,7 @@ public class Player extends Entity implements Movable, Shoots {
 
 	@Override
 	public void move() {
-		int screenWidth = 800; // TODO move to config class
-		int newX = Math.max(0, Math.min(getX() + movement, screenWidth - getHitbox().width));
+		int newX = Math.max(0, Math.min(getX() + movement, GameConfig.SCREEN_WIDTH - getHitbox().width));
 		setX(newX);
 	}
 
