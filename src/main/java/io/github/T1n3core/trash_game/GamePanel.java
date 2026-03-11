@@ -94,6 +94,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     }
 
     private void updateGame() {
+        gameState.commit();
 
         boolean playerAlive = false;
 
