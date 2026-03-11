@@ -17,6 +17,9 @@ public class Projectile extends Entity implements Movable {
 	public void update(GameState state) {
 		move();
 		checkCollisions(state);
+		if (getY() < 0 || getY() > 600) {
+			state.kill(this);
+		}
 	}
 
 	@Override
