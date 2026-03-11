@@ -43,6 +43,8 @@ public class Player extends Entity implements Movable, Shoots {
 			return;
 		}
 
+		// TODO add a firing cooldown
+
 		int projectileX = getX() + getHitbox().width / 2;
 		int projectileY = getY();
 

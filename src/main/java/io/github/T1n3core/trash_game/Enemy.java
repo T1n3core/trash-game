@@ -6,7 +6,7 @@ public class Enemy extends Entity implements Movable {
 	private int direction = 1; // 1 = right, -1 = left
 	private final int speed = 2;
 
-	private static final int SCREEN_WIDTH = 800; // temporary
+	private static final int SCREEN_WIDTH = 800; // TODO might be worth making a game config class
 
 	protected Enemy(int x, int y, BufferedImage sprite) {
 		super(x, y, sprite.getWidth(), sprite.getHeight(), sprite);

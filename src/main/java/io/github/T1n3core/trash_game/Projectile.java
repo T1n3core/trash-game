@@ -18,7 +18,7 @@ public class Projectile extends Entity implements Movable {
 	}
 
 	@Override
-	public void move() {
+	public void move() { // TODO destroy projectiles after they go off screen
 		if (owner instanceof Player) {
 			setY(getY() - movementSpeed);
 		} else {
