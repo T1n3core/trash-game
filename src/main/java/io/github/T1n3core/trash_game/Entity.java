@@ -34,10 +34,12 @@ public abstract class Entity {
 
 	public void setX(int x) {
 		this.x = x;
+		hitbox.x = x;
 	}
 
 	public void setY(int y) {
 		this.y = y;
+		hitbox.y = y;
 	}
 
 	public abstract void update(GameState state);
