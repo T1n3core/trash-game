@@ -52,6 +52,8 @@ public class Player extends Entity implements Movable, Shoots {
 
 		Projectile projectile = new Projectile(this, projectileX, projectileY, ResourceCache.PLAYER); // TODO add actual player projectile resource to the resources folder
 		state.spawn(projectile);
+
+		firingCooldown = 20;
 	}
 
 	@Override
