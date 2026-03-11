@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 public class Enemy extends Entity implements Movable {
 	private int direction = 1; // 1 = right, -1 = left
 	private final int speed = 2;
+	private static final Team team = Team.ENEMY;
 
 	private static final int SCREEN_WIDTH = 800; // TODO might be worth making a game config class
 
@@ -32,5 +33,10 @@ public class Enemy extends Entity implements Movable {
 		} else {
 			setX(newX);
 		}
+	}
+
+	@Override
+	public Team team() {
+		return team;
 	}
 }

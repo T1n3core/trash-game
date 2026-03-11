@@ -3,6 +3,7 @@ package io.github.T1n3core.trash_game;
 public class Player extends Entity implements Movable, Shoots {
 	private int movement;
 	private static final int movementSpeed = 10;
+	public static final Team team = Team.FRIENDLY;
 
 	public Player(int x, int y) {
 		super(x, y, ResourceCache.PLAYER.getWidth(), ResourceCache.PLAYER.getHeight(), ResourceCache.PLAYER);
@@ -46,5 +47,10 @@ public class Player extends Entity implements Movable, Shoots {
 
 		Projectile projectile = new Projectile(this, projectileX, projectileY, ResourceCache.PLAYER); // TODO add actual player projectile resource to the resources folder
 		state.spawn(projectile);
+	}
+
+	@Override
+	public Team team() {
+		 return team;
 	}
 }

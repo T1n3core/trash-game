@@ -3,12 +3,14 @@ package io.github.T1n3core.trash_game;
 import java.awt.image.BufferedImage;
 
 public class Projectile extends Entity implements Movable {
-	private Entity owner;
+	private final Entity owner;
 	private static final int movementSpeed = 25;
+	private final Team team;
 
 	public Projectile(Entity owner, int x, int y, BufferedImage sprite) {
 		super(x, y, sprite.getWidth(), sprite.getHeight(), sprite);
 		this.owner = owner;
+		this.team = owner.team();
 	}
 
 	@Override
@@ -26,9 +28,9 @@ public class Projectile extends Entity implements Movable {
 		}
 	}
 
-	private void checkCollisions(GameState state) { // TODO rewrite this method with a team system instead of the fragile class equality check
+	private void checkCollisions(GameState state) {
 		for (Entity e : state.getEntities()) {
-			if (e.getClass().equals(owner.getClass()))
+			if (e.team() == team)
 				continue;
 
 			if (getHitbox().intersects(e.getHitbox())) {
@@ -40,5 +42,10 @@ public class Projectile extends Entity implements Movable {
 				state.kill(this);
 			}
 		}
+	}
+
+	@Override
+	public Team team() {
+		return team;
 	}
 }

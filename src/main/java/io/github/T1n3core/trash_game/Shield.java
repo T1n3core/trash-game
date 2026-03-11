@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 public class Shield extends Entity {
 	private boolean damage;
 	private int health;
+	public static final Team team = Team.NEUTRAL;
 
 	public Shield(int x, int y, BufferedImage sprite) {
 		super(x, y, sprite.getWidth(), sprite.getHeight(), sprite);
@@ -26,5 +27,10 @@ public class Shield extends Entity {
 
 	public void damage() {
 		damage = true;
+	}
+
+	@Override
+	public Team team() {
+		return team;
 	}
 }

@@ -43,4 +43,6 @@ public abstract class Entity {
 	}
 
 	public abstract void update(GameState state);
+
+	public abstract Team team();
 }
