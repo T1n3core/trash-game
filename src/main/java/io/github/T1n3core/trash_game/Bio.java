@@ -22,7 +22,7 @@ public class Bio extends Enemy implements Shoots {
         int[] offsets = {-15, 0, 15};
         
         for (int offset : offsets) {
-            try {
+            try { // TODO constant projectile sprites to reduce syscall overhead
                 Projectile projectile = new Projectile(this, centerX + offset, projectileY, ImageIO.read(new File("seed.png")));
                 state.spawn(projectile);
             } catch (Exception e) {
