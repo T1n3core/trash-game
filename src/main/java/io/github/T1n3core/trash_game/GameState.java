@@ -7,13 +7,17 @@ public class GameState {
 	private volatile boolean moveLeft;
 	private volatile boolean moveRight;
 	private volatile boolean shoot;
-	private final List<Entity> entities; // TODO will posibly need to add entity destruction and creation queue
+	private final List<Entity> entities;
+	private final List<Entity> spawnQueue;
+	private final List<Entity> killQueue;
 
 	public GameState() {
 		this.moveLeft = false;
 		this.moveRight = false;
 		this.shoot = false;
 		this.entities = new ArrayList<>();
+		this.spawnQueue = new ArrayList<>();
+		this.killQueue = new ArrayList<>();
 	}
 
 	public void setMoveLeft(boolean moveLeft) {
@@ -41,15 +45,23 @@ public class GameState {
 	}
 
 	public void kill(Entity e) {
-		entities.remove(e);
+		killQueue.add(e);
 	}
 
 	public void spawn(Entity e) {
-		entities.add(e);
+		spawnQueue.add(e);
 	}
 
 	public List<Entity> getEntities() {
-		return List.copyOf(entities);
+		return entities;
+	}
+
+	public void commit() {
+		entities.removeAll(killQueue);
+		entities.addAll(spawnQueue);
+
+		killQueue.clear();
+		spawnQueue.clear();
 	}
 
 	// TODO add a score tracking system, could need a separate class
