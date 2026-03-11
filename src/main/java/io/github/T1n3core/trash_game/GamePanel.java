@@ -28,30 +28,25 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void run() {
+
+        final int TARGET_FPS = 60;
+        final double TIME_PER_FRAME = 1_000_000_000.0 / TARGET_FPS;
+
+        long lastTime = System.nanoTime();
+        double delta = 0;
         
         while (running) {
+
+            long now = System.nanoTime();
+            delta += (now - lastTime) / TIME_PER_FRAME;
+            lastTime = now;
+
+            while (delta >= 1) {
+                updateGame();
+                delta--;
+            }
             
-            boolean playerAlive = false;
-
-            for (Entity e : gameState.getEntities()) {
-                if (e instanceof Player) {
-                    playerAlive = true;
-                }
-
-                e.update(gameState);
-            }
-
-            if (!playerAlive) {
-                gameOver();
-            }
-
             repaint();
-
-            try { // TODO might need to rewrite with fixed timing
-                Thread.sleep(16);
-            } catch (InterruptedException e) {
-                e.printStackTrace();    
-            }
         }
     }
 
@@ -99,6 +94,23 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
             case KeyEvent.VK_SPACE:
                 gameState.setShoot(false);
                 break;
+        }
+    }
+
+    private void updateGame() {
+
+        boolean playerAlive = false;
+
+        for (Entity e : gameState.getEntities()) {
+            if (e instanceof Player) {
+                playerAlive = true;
+            }
+
+            e.update(gameState);
+        }
+
+        if (!playerAlive) {
+            gameOver();
         }
     }
 
