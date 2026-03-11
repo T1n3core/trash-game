@@ -11,6 +11,7 @@ import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class BackgroundMusicPlayer implements Runnable {
+    // TODO class might need a rewrite because of unreliable looping, low priority
     private final String filePath;
     private volatile boolean isPlaying = true;
 

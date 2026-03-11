@@ -22,7 +22,7 @@ public class Enemy extends Entity implements Movable {
 	}
 
 	@Override
-	public void move() {		
+	public void move() { // TODO implement movement in formations	
 		int newX = getX() + direction * speed;
 
 		// temporary hardcode

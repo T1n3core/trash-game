@@ -26,7 +26,7 @@ public class Projectile extends Entity implements Movable {
 		}
 	}
 
-	private void checkCollisions(GameState state) {
+	private void checkCollisions(GameState state) { // TODO rewrite this method with a team system instead of the fragile class equality check
 		for (Entity e : state.getEntities()) {
 			if (e.getClass().equals(owner.getClass()))
 				continue;

@@ -18,8 +18,11 @@ public class Paper extends Enemy implements Shoots {
 		int projectileX = getX() + getHitbox().width / 2 - 5; // Assuming a 10px projectile
 		int projectileY = getY() + getHitbox().height;
 
-		Projectile projectile = new Projectile(this, projectileX, projectileY, getSprite());
-
-		state.spawn(projectile);
+		try { // TODO constant projectile sprites to reduce syscall overhead
+			Projectile projectile = new Projectile(this, projectileX, projectileY, ImageIO.read(new File("plane.png")));
+			state.spawn(projectile);
+		} catch (Exception e) {
+			System.err.println("Could not load paper projectile sprite, projectile will not be created");
+		}
 	}
 }

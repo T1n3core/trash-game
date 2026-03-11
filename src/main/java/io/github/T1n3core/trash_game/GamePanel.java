@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -37,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
             repaint();
 
-            try {
+            try { // TODO might need to rewrite with fixed timing
                 Thread.sleep(16);
             } catch (InterruptedException e) {
                 e.printStackTrace();    
@@ -74,6 +73,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             gameState.setMoveRight(true);
         }
+        // TODO possibly rewrite this with switch case statement instead
     }
 
     @Override
@@ -101,4 +101,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {}
+
+    // TODO implement a game over method
 }

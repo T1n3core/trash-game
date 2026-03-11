@@ -7,7 +7,7 @@ public class GameState {
 	private volatile boolean moveLeft;
 	private volatile boolean moveRight;
 	private volatile boolean shoot;
-	private final List<Entity> entities;
+	private final List<Entity> entities; // TODO will posibly need to add entity destruction and creation queue
 
 	public GameState() {
 		this.moveLeft = false;
@@ -51,4 +51,6 @@ public class GameState {
 	public List<Entity> getEntities() {
 		return List.copyOf(entities);
 	}
+
+	// TODO add a score tracking system, could need a separate class
 }

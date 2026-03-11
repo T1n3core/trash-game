@@ -24,6 +24,7 @@ public class Player extends Entity implements Movable, Shoots {
 	@Override
 	public void move() {
 		setX(this.getX() + movement);
+		// TODO add boundary checks to prevent off screening
 	}
 
 	private void handleInput(GameState state) {
@@ -45,11 +46,11 @@ public class Player extends Entity implements Movable, Shoots {
 		int projectileX = getX() + getHitbox().width / 2;
 		int projectileY = getY();
 
-		try {
+		try { // TODO constant projectile sprites to reduce syscall overhead
 			Projectile projectile = new Projectile(this, projectileX, projectileY, ImageIO.read(new File("player_projectile.png")));
 			state.spawn(projectile);
 		} catch (Exception e) {
-			System.err.println("Could not load player projectile sprite, projectile will be invisible");
+			System.err.println("Could not load player projectile sprite, projectile will not be created");
 		}
 	}
 }
