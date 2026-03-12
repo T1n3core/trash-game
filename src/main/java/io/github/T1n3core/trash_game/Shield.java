@@ -6,9 +6,10 @@ public class Shield extends Entity {
 	public static final Team team = Team.NEUTRAL;
 
 	public Shield(int x, int y) {
-		super(x, y, ResourceCache.SHIELD.getWidth() - 50, ResourceCache.SHIELD.getHeight(), ResourceCache.SHIELD);
+		super(x, y, ResourceCache.SHIELD.getWidth(), ResourceCache.SHIELD.getHeight(), ResourceCache.SHIELD);
 		damage = false;
 		health = 10;
+		shrinkHitbox(160, 160);
 	}
 
 	@Override
