@@ -11,7 +11,7 @@ public class Player extends Entity implements Movable, Shoots {
 		movement = 0;
 		firingCooldown = 0;
 		shrinkHitbox(160, 80);
-		offsetHitbox(160, 0);
+		offsetHitbox(80, 0);
 	}
 
 	@Override
