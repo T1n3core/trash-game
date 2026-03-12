@@ -12,6 +12,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private GameState gameState;
     private boolean gameOver = false;
     private int difficulty;
+    private EnemyController controller;
 
     public GamePanel() {
         setFocusable(true);
@@ -22,9 +23,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         gameState = new GameState();
 
+        controller = new EnemyController();
+
         running = true;
 
-        gameState.spawn(new Player(GameConfig.SCREEN_HEIGHT / 2, 800));
+        gameState.spawn(new Player(GameConfig.SCREEN_WIDTH / 2, 750));
 
         gameThread = new Thread(this);
         gameThread.start();
@@ -105,6 +108,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         boolean playerAlive = false;
         boolean enemiesDead = true;
+
+        controller.update(gameState);
 
         for (Entity e : gameState.getEntities()) {
             if (e instanceof Player) {

@@ -3,7 +3,7 @@ package io.github.T1n3core.trash_game;
 public class Player extends Entity implements Movable, Shoots {
 	private int movement;
 	private int firingCooldown;
-	private static final int MOVEMENT_SPEED = 10;
+	private static final int MOVEMENT_SPEED = 8;
 	public static final Team team = Team.FRIENDLY;
 
 	public Player(int x, int y) {
@@ -43,17 +43,17 @@ public class Player extends Entity implements Movable, Shoots {
 			return;
 		}
 
-		if (firingCooldown != 0) {
+		if (firingCooldown > 0) {
 			return;
 		}
 
 		int projectileX = getX() + getHitbox().width / 2;
 		int projectileY = getY();
 
-		Projectile projectile = new Projectile(this, projectileX, projectileY, ResourceCache.PLAYER); // TODO add actual player projectile resource to the resources folder
+		Projectile projectile = new Projectile(this, projectileX, projectileY, ResourceCache.PLAYER);
 		state.spawn(projectile);
 
-		firingCooldown = 20;
+		firingCooldown = 40;
 	}
 
 	@Override
