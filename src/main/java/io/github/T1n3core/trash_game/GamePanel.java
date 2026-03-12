@@ -28,11 +28,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         running = true;
 
         gameState.spawn(new Player(GameConfig.SCREEN_WIDTH / 2, 750));
+        spawnShields();
 
         gameThread = new Thread(this);
         gameThread.start();
-
-        // TODO add  shield spawning
     }
 
     @Override
@@ -150,5 +149,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private void gameOver() {
         gameOver = true;
         running = false;
+    }
+
+    private void spawnShields() {
+        int numShields = 4;
+        int shieldSpacing = GameConfig.SCREEN_WIDTH / (numShields + 1);
+        int shieldY = 600;
+
+        for (int i=1; i <= numShields; i++) {
+            int shieldX = i * shieldSpacing - ResourceCache.SHIELD.getWidth();
+            Shield shield = new Shield(shieldX, shieldY);
+            gameState.spawn(shield);
+        }
     }
 }
