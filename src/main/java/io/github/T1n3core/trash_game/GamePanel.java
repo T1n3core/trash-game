@@ -166,7 +166,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         for (int i=1; i <= numShields; i++) {
             int shieldX = i * shieldSpacing - ResourceCache.SHIELD.getWidth();
-            shieldX += 160;
+            shieldX += 200;
             Shield shield = new Shield(shieldX, shieldY);
             gameState.spawn(shield);
         }
