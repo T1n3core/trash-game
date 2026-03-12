@@ -12,7 +12,7 @@ public abstract class Entity {
 	protected Entity(int x, int y, int width, int height, BufferedImage sprite) {
 		this.x = x;
 		this.y = y;
-		this.hitbox = new Rectangle(x, y, width - 50, height);
+		this.hitbox = new Rectangle(x, y, width, height);
 		this.sprite = sprite;
 	}
 
@@ -40,6 +40,16 @@ public abstract class Entity {
 	public void setY(int y) {
 		this.y = y;
 		hitbox.y = y;
+	}
+	
+	public void shrinkHitbox(int shrinkWidth, int shrinkHeight) {
+		int newWidth = hitbox.width - shrinkWidth;
+		int newHeight = hitbox.height - shrinkHeight;
+		
+		hitbox.x += shrinkWidth / 2;
+		hitbox.y += shrinkHeight / 2;
+		hitbox.width = newWidth;
+		hitbox.height = newHeight;
 	}
 
 	public abstract void update(GameState state);
