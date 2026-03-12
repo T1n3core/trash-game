@@ -1,13 +1,21 @@
 package io.github.T1n3core.trash_game;
 
 public class Bio extends Enemy implements Shoots {
+    private int firingCooldown;
+
     public Bio(int x, int y) {
         super(x, y, ResourceCache.BIO);
+        firingCooldown = 0;
     }
 
     @Override
     public void shoot(GameState state) {
         if (Math.random() > 0.02) {
+            return;
+        }
+
+        if (firingCooldown != 0) {
+            firingCooldown--;
             return;
         }
 
@@ -20,5 +28,7 @@ public class Bio extends Enemy implements Shoots {
             Projectile projectile = new Projectile(this, centerX + offset, projectileY, ResourceCache.SEED);
             state.spawn(projectile);
         }
+
+        firingCooldown = 120;
     }
 }
