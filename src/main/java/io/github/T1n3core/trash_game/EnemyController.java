@@ -6,7 +6,6 @@ public class EnemyController {
     private static final int DROP_DISTANCE = 40;
 
     public void update(GameState state) {
-
         boolean shouldDrop = false;
 
         for (Entity e : state.getEntities()) {

@@ -7,8 +7,8 @@ public class Enemy extends Entity implements Movable {
 
 	protected Enemy(int x, int y, BufferedImage sprite) {
 		super(x, y, sprite.getWidth(), sprite.getHeight(), sprite);
-		shrinkHitbox(45, 34);
-		offsetHitbox(22, 4);
+		shrinkHitbox(45, 30);
+		offsetHitbox(22, 0);
 	}
 
 	@Override
