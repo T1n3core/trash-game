@@ -23,10 +23,11 @@ public class Bio extends Enemy implements Shoots {
         int centerX = getX() + getHitbox().width / 2 - 5;
         int projectileY = getY() + getHitbox().height;
 
-        int[] offsets = {-45, 0, 45};
+        int[] offsets = {-60, 0, 60};
         
         for (int offset : offsets) {
             Projectile projectile = new Projectile(this, centerX + offset, projectileY, ResourceCache.SEED);
+            projectile.shrinkHitbox(40, 20);
             state.spawn(projectile);
         }
 
