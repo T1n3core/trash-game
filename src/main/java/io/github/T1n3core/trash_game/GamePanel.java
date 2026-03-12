@@ -1,10 +1,13 @@
 package io.github.T1n3core.trash_game;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import javax.swing.SwingUtilities;
+
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
     private Thread gameThread;
@@ -66,6 +69,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         for (Entity e : gameState.getEntities()) {
             g.drawImage(e.getSprite(), e.getX(), e.getY(), null);
+
+            // Colored hitbox
+            Rectangle hitbox = e.getHitbox();
+            g.setColor(Color.red);
+            g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         }
 
         if (gameOver) {
