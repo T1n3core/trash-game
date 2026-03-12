@@ -24,6 +24,7 @@ public class Paper extends Enemy implements Shoots {
 		int projectileY = getY() + getHitbox().height;
 
 		Projectile projectile = new Projectile(this, projectileX, projectileY, ResourceCache.PLANE);
+		projectile.shrinkHitbox(40, 20);
 		state.spawn(projectile);
 
 		firingCooldown = 150;
