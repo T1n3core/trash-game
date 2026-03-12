@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 public abstract class Entity {
 	private int x;
 	private int y;
+	private int hitboxOffsetX;
+	private int hitboxOffsetY;
 	private final Rectangle hitbox;
 	private final BufferedImage sprite;
 
@@ -14,6 +16,8 @@ public abstract class Entity {
 		this.y = y;
 		this.hitbox = new Rectangle(x, y, width, height);
 		this.sprite = sprite;
+		this.hitboxOffsetX = 0;
+		this.hitboxOffsetY = 0;
 	}
 
 	public int getX() {
@@ -34,12 +38,12 @@ public abstract class Entity {
 
 	public void setX(int x) {
 		this.x = x;
-		hitbox.x = x;
+		hitbox.x = x + hitboxOffsetX;
 	}
 
 	public void setY(int y) {
 		this.y = y;
-		hitbox.y = y;
+		hitbox.y = y + hitboxOffsetY;
 	}
 	
 	public void shrinkHitbox(int shrinkWidth, int shrinkHeight) {
@@ -53,6 +57,8 @@ public abstract class Entity {
 	}
 
 	public void offsetHitbox(int offsetX, int offsetY) {
+		hitboxOffsetX += offsetX;
+		hitboxOffsetY += offsetY;
 		hitbox.x += offsetX;
 		hitbox.y += offsetY;
 	}

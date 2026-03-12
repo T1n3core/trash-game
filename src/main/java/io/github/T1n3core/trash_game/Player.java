@@ -3,7 +3,7 @@ package io.github.T1n3core.trash_game;
 public class Player extends Entity implements Movable, Shoots {
 	private int movement;
 	private int firingCooldown;
-	private static final int MOVEMENT_SPEED = 8;
+	private static final int MOVEMENT_SPEED = 10;
 	public static final Team team = Team.FRIENDLY;
 
 	public Player(int x, int y) {
@@ -11,6 +11,7 @@ public class Player extends Entity implements Movable, Shoots {
 		movement = 0;
 		firingCooldown = 0;
 		shrinkHitbox(160, 80);
+		offsetHitbox(160, 0);
 	}
 
 	@Override
