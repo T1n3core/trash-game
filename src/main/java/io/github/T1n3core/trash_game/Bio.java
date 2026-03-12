@@ -5,7 +5,7 @@ public class Bio extends Enemy implements Shoots {
 
     public Bio(int x, int y) {
         super(x, y, ResourceCache.BIO);
-        firingCooldown = 0;
+        firingCooldown = 90;
     }
 
     @Override
@@ -29,6 +29,6 @@ public class Bio extends Enemy implements Shoots {
             state.spawn(projectile);
         }
 
-        firingCooldown = 120;
+        firingCooldown = 180;
     }
 }

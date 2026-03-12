@@ -5,7 +5,7 @@ public class Paper extends Enemy implements Shoots {
 
 	public Paper(int x, int y) {
 		super(x, y, ResourceCache.PAPER);
-		firingCooldown = 0;
+		firingCooldown = 90;
 	}
 
 	@Override
@@ -25,6 +25,6 @@ public class Paper extends Enemy implements Shoots {
 		Projectile projectile = new Projectile(this, projectileX, projectileY, ResourceCache.PLANE);
 		state.spawn(projectile);
 
-		firingCooldown = 90;
+		firingCooldown = 150;
 	}
 }
