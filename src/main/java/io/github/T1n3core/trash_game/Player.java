@@ -50,7 +50,7 @@ public class Player extends Entity implements Movable, Shoots {
 		int projectileX = getX() + getHitbox().width / 2;
 		int projectileY = getY();
 
-		Projectile projectile = new Projectile(this, projectileX, projectileY, ResourceCache.PLAYER);
+		Projectile projectile = new Projectile(this, projectileX, projectileY, ResourceCache.LASER);
 		state.spawn(projectile);
 
 		firingCooldown = 40;

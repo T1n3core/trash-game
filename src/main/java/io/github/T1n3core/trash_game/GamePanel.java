@@ -31,6 +31,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         gameThread = new Thread(this);
         gameThread.start();
+
+        // TODO add  shield spawning
     }
 
     @Override

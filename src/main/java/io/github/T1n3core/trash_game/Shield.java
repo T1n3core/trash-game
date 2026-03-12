@@ -1,14 +1,12 @@
 package io.github.T1n3core.trash_game;
 
-import java.awt.image.BufferedImage;
-
 public class Shield extends Entity {
 	private boolean damage;
 	private int health;
 	public static final Team team = Team.NEUTRAL;
 
-	public Shield(int x, int y, BufferedImage sprite) {
-		super(x, y, sprite.getWidth(), sprite.getHeight(), sprite);
+	public Shield(int x, int y) {
+		super(x, y, ResourceCache.SHIELD.getWidth(), ResourceCache.SHIELD.getHeight(), ResourceCache.SHIELD);
 		damage = false;
 		health = 10;
 	}

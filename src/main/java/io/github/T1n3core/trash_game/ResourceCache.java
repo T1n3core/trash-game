@@ -14,6 +14,8 @@ public final class ResourceCache {
     public static final BufferedImage SEED;
     public static final BufferedImage BACKGROUND;
     public static final BufferedImage ICON;
+    public static final BufferedImage SHIELD;
+    public static final BufferedImage LASER;
 
     static {
         try {
@@ -25,6 +27,8 @@ public final class ResourceCache {
             SEED = load("seed.png");
             BACKGROUND = load("background.png");
             ICON = load ("game_icon.png");
+            SHIELD = load("shield.png");
+            LASER = load("laser.png");
         } catch (IOException e) {
             throw new RuntimeException("Failed to load resources", e);
         }
