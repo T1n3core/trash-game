@@ -15,14 +15,14 @@ public class Player extends Entity implements Movable, Shoots {
 	@Override
 	public void update(GameState state) {
 		handleInput(state);
-		move();
+		move(state);
 		shoot(state);
 		movement = 0;
 		firingCooldown--;
 	}
 
 	@Override
-	public void move() {
+	public void move(GameState state) {
 		int newX = Math.max(0, Math.min(getX() + movement, GameConfig.SCREEN_WIDTH - getHitbox().width));
 		setX(newX);
 	}

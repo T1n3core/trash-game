@@ -15,7 +15,7 @@ public class Enemy extends Entity implements Movable {
 
 	@Override
 	public void update(GameState state) {
-		move();
+		move(state);
 
 		if (this instanceof Shoots shooter) {
 			shooter.shoot(state);
@@ -23,14 +23,33 @@ public class Enemy extends Entity implements Movable {
 	}
 
 	@Override
-	public void move() { // TODO make enemies move in a formation
-		int newX = getX() + direction * SPEED;
+	public void move(GameState state) { // TODO make enemies move in a formation
+		
+		boolean shouldDrop = false;
 
-		if (newX <= 0 || newX >= GameConfig.SCREEN_WIDTH - getHitbox().width) {
+		for (Entity e : state.getEntities()) {
+			if (!(e instanceof Enemy enemy)) {
+				continue;
+			}
+
+			int nextX = enemy.getX() + direction * SPEED;
+
+			if (nextX <= 0 || nextX >= GameConfig.SCREEN_WIDTH - enemy.getHitbox().width) {
+				shouldDrop = true;
+				break;
+			}
+		}
+
+		if (shouldDrop) {
 			direction *= -1;
-			setY(getY() + DROP_DISTANCE);
+
+			for (Object e : state.getEntities()) {
+				if (e instanceof Enemy enemy) {
+					enemy.setY(enemy.getY() + DROP_DISTANCE);
+				}
+			}
 		} else {
-			setX(newX);
+			setX(getX() + direction * SPEED);
 		}
 	}
 

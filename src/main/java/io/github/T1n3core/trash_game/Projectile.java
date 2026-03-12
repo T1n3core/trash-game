@@ -13,7 +13,7 @@ public class Projectile extends Entity implements Movable {
 
     @Override
     public void update(GameState state) {
-        move();
+        move(state);
         checkCollisions(state);
         if (getY() < 0 || getY() > GameConfig.SCREEN_HEIGHT) {
             state.kill(this);
@@ -21,7 +21,7 @@ public class Projectile extends Entity implements Movable {
     }
 
     @Override
-    public void move() {
+    public void move(GameState state) {
         if (team == Team.FRIENDLY) {
             setY(getY() - movementSpeed);
         } else {
