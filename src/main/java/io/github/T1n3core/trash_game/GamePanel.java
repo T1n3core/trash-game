@@ -27,7 +27,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
         running = true;
 
-        gameState.spawn(new Player(GameConfig.SCREEN_HEIGHT / 2, 800));
+        gameState.spawn(new Player(GameConfig.SCREEN_WIDTH / 2, 750));
 
         gameThread = new Thread(this);
         gameThread.start();
