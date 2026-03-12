@@ -23,7 +23,7 @@ public class Enemy extends Entity implements Movable {
 	}
 
 	@Override
-	public void move(GameState state) { // TODO make enemies move in a formation
+	public void move(GameState state) {
 		
 		boolean shouldDrop = false;
 

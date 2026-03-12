@@ -11,10 +11,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     private boolean running;
     private GameState gameState;
     private boolean gameOver = false;
+    private int difficulty;
 
     public GamePanel() {
         setFocusable(true);
         addKeyListener(this);
+
+        difficulty = 1;
 
         gameState = new GameState();
 
@@ -93,17 +96,34 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    private void updateGame() { // TODO integrate spawning into the actual game loop and add difficulty progression
+    private void updateGame() {
         gameState.commit();
 
         boolean playerAlive = false;
+        boolean enemiesDead = true;
 
         for (Entity e : gameState.getEntities()) {
             if (e instanceof Player) {
                 playerAlive = true;
             }
 
+            if (e instanceof Enemy) {
+                enemiesDead = false;
+            }
+
             e.update(gameState);
+        }
+
+        if (enemiesDead) {
+            switch (difficulty) {
+                case 1 -> EnemySpawner.formation1(gameState);
+                case 2 -> EnemySpawner.formation2(gameState);
+                case 3 -> EnemySpawner.formation3(gameState);
+                case 4 -> EnemySpawner.formation4(gameState);
+                default -> EnemySpawner.formation5(gameState);
+            }
+
+            difficulty++;
         }
 
         gameState.commit();
