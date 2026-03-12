@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameState {
-
     private volatile boolean moveLeft;
     private volatile boolean moveRight;
     private volatile boolean shoot;
@@ -12,7 +11,7 @@ public class GameState {
     private final List<Entity> spawnQueue;
     private final List<Entity> killQueue;
 
-    public static int score;
+    public static int score = 0;
 
     public GameState() {
         this.moveLeft = false;
@@ -21,7 +20,6 @@ public class GameState {
         this.entities = new ArrayList<>();
         this.spawnQueue = new ArrayList<>();
         this.killQueue = new ArrayList<>();
-        this.score = 0;
     }
 
     public void setMoveLeft(boolean moveLeft) {
@@ -49,7 +47,6 @@ public class GameState {
     }
 
     public void kill(Entity e) {
-
         if (e instanceof Bio) {
             score += 300;
         }
