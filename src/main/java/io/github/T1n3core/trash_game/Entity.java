@@ -52,6 +52,11 @@ public abstract class Entity {
 		hitbox.height = newHeight;
 	}
 
+	public void offsetHitbox(int offsetX, int offsetY) {
+		hitbox.x += offsetX;
+		hitbox.y += offsetY;
+	}
+
 	public abstract void update(GameState state);
 
 	public abstract Team team();

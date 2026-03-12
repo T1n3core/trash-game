@@ -10,6 +10,7 @@ public class Player extends Entity implements Movable, Shoots {
 		super(x, y, ResourceCache.PLAYER.getWidth(), ResourceCache.PLAYER.getHeight(), ResourceCache.PLAYER);
 		movement = 0;
 		firingCooldown = 0;
+		shrinkHitbox(160, 80);
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class Player extends Entity implements Movable, Shoots {
 		int projectileY = getY();
 
 		Projectile projectile = new Projectile(this, projectileX, projectileY, ResourceCache.LASER);
-		projectile.shrinkHitbox(60, 20);
+		projectile.shrinkHitbox(70, 20);
 		state.spawn(projectile);
 
 		firingCooldown = 40;
