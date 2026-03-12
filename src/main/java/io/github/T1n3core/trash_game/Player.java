@@ -49,8 +49,8 @@ public class Player extends Entity implements Movable, Shoots {
 			return;
 		}
 
-		int projectileX = getX() + getHitbox().width / 2;
-		int projectileY = getY();
+		int projectileX = getX() + getHitbox().width / 2 + 60;
+		int projectileY = getY() - 115;
 
 		Projectile projectile = new Projectile(this, projectileX, projectileY, ResourceCache.LASER);
 		projectile.shrinkHitbox(70, 20);
