@@ -3,7 +3,7 @@ package io.github.T1n3core.trash_game;
 import java.awt.image.BufferedImage;
 
 public class Projectile extends Entity implements Movable {
-    private static final int movementSpeed = 25;
+    private static final int movementSpeed = 15;
     private final Team team;
 
     public Projectile(Entity owner, int x, int y, BufferedImage sprite) {

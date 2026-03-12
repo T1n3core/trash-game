@@ -4,13 +4,9 @@ import java.awt.image.BufferedImage;
 
 public class Enemy extends Entity implements Movable {
 	private static final Team team = Team.ENEMY;
-	private int direction;
-	private static final int SPEED = 2;
-	private static final int DROP_DISTANCE = 40;
 
 	protected Enemy(int x, int y, BufferedImage sprite) {
 		super(x, y, sprite.getWidth(), sprite.getHeight(), sprite);
-		direction = 1;
 	}
 
 	@Override
@@ -23,35 +19,7 @@ public class Enemy extends Entity implements Movable {
 	}
 
 	@Override
-	public void move(GameState state) {
-		
-		boolean shouldDrop = false;
-
-		for (Entity e : state.getEntities()) {
-			if (!(e instanceof Enemy enemy)) {
-				continue;
-			}
-
-			int nextX = enemy.getX() + direction * SPEED;
-
-			if (nextX <= 0 || nextX >= GameConfig.SCREEN_WIDTH - enemy.getHitbox().width) {
-				shouldDrop = true;
-				break;
-			}
-		}
-
-		if (shouldDrop) {
-			direction *= -1;
-
-			for (Object e : state.getEntities()) {
-				if (e instanceof Enemy enemy) {
-					enemy.setY(enemy.getY() + DROP_DISTANCE);
-				}
-			}
-		} else {
-			setX(getX() + direction * SPEED);
-		}
-	}
+	public void move(GameState state) {}
 
 	@Override
 	public Team team() {

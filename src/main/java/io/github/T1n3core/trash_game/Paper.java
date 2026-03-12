@@ -10,16 +10,17 @@ public class Paper extends Enemy implements Shoots {
 
 	@Override
 	public void shoot(GameState state) {
-		if (Math.random() > 0.02) {
-			return;
-		}
-
 		if (firingCooldown != 0) {
 			firingCooldown--;
 			return;
 		}
 
-		int projectileX = getX() + getHitbox().width / 2 - 5; // Assuming a 10px projectile
+		if (Math.random() > 0.02) {
+			firingCooldown = 15;
+			return;
+		}
+
+		int projectileX = getX() + getHitbox().width / 2 - 5;
 		int projectileY = getY() + getHitbox().height;
 
 		Projectile projectile = new Projectile(this, projectileX, projectileY, ResourceCache.PLANE);
