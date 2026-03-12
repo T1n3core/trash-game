@@ -12,7 +12,7 @@ public class GameState {
     private final List<Entity> spawnQueue;
     private final List<Entity> killQueue;
 
-    private int score;
+    public static int score;
 
     public GameState() {
         this.moveLeft = false;
@@ -50,7 +50,15 @@ public class GameState {
 
     public void kill(Entity e) {
 
-        if (e instanceof Enemy) {
+        if (e instanceof Bio) {
+            score += 300;
+        }
+
+        if (e instanceof Paper) {
+            score += 200;
+        }
+
+        if (e instanceof Plastic) {
             score += 100;
         }
 

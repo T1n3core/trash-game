@@ -39,6 +39,7 @@ public class EnemySpawner {
         spawnWavePlastic(state, spacingY * 2);
         spawnWavePlastic(state, spacingY * 3);
         spawnWavePlastic(state, spacingY * 4);
+        GameState.score += 1000;
     }
 
     public static void formation3(GameState state) {
@@ -47,6 +48,7 @@ public class EnemySpawner {
         spawnWavePaper(state, spacingY * 2);
         spawnWavePlastic(state, spacingY * 3);
         spawnWavePlastic(state, spacingY * 4);
+        GameState.score += 1000;
     }
 
     public static void formation4(GameState state) {
@@ -55,6 +57,7 @@ public class EnemySpawner {
         spawnWavePaper(state, spacingY * 2);
         spawnWavePaper(state, spacingY * 3);
         spawnWavePlastic(state, spacingY * 4);
+        GameState.score += 1000;
     }
 
     public static void formation5(GameState state) {
@@ -63,5 +66,6 @@ public class EnemySpawner {
         spawnWavePaper(state, spacingY * 2);
         spawnWavePaper(state, spacingY * 3);
         spawnWavePlastic(state, spacingY * 4);
+        GameState.score += 1000;
     }
 }
