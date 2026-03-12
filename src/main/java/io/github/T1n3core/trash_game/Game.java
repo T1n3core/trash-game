@@ -8,15 +8,18 @@ import javax.swing.JFrame;
 
 public class Game extends JFrame {
     public Game() throws IOException {
-        setUndecorated(true);
-        setIgnoreRepaint(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setUndecorated(true);
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        device.setFullScreenWindow(this);
-        
-        setIconImage(ResourceCache.ICON);
-        setTitle("Trash Game");
-        add(new GamePanel());
-    }
+    GamePanel panel = new GamePanel();
+    add(panel);
+
+    setIconImage(ResourceCache.ICON);
+    setTitle("Trash Game");
+
+    GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    device.setFullScreenWindow(this);
+
+    panel.requestFocusInWindow();
+}
 }

@@ -3,7 +3,7 @@ package io.github.T1n3core.trash_game;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
+import javax.swing.SwingUtilities;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
@@ -16,6 +16,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
     public GamePanel() {
         setFocusable(true);
         addKeyListener(this);
+        SwingUtilities.invokeLater(this::requestFocusInWindow);
 
         difficulty = 1;
 
@@ -74,10 +75,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        System.out.println("KEY: " + e.getKeyCode());
 
         if (gameOver) {
             return;
         }
+
+        System.out.println("KEY: " + e.getKeyCode());
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A, KeyEvent.VK_LEFT -> gameState.setMoveLeft(true);

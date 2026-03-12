@@ -6,8 +6,8 @@ public final class GameConfig {
 
     static  {
         try {
-            SCREEN_WIDTH = 800;
-            SCREEN_HEIGHT = 600;
+            SCREEN_WIDTH = 1920;
+            SCREEN_HEIGHT = 1080;
         } catch (Exception e) {
             throw new RuntimeException("Failed to set width and height");
         }
