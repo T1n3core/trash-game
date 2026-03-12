@@ -12,7 +12,7 @@ public abstract class Entity {
 	protected Entity(int x, int y, int width, int height, BufferedImage sprite) {
 		this.x = x;
 		this.y = y;
-		this.hitbox = new Rectangle(x, y, width, height);
+		this.hitbox = new Rectangle(x, y, width - 50, height);
 		this.sprite = sprite;
 	}
 
