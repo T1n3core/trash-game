@@ -10,243 +10,245 @@ import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
+	private Thread gameThread;
+	private boolean running;
+	private GameState gameState;
+	private boolean gameOver = false;
+	private int difficulty;
+	private EnemyController controller;
+	private BackgroundMusicPlayer bgm;
+	private static int bestScore = 0;
+	private static final String HIGHSCORE_FILE = "highscore.dat";
 
-    private Thread gameThread;
-    private boolean running;
-    private GameState gameState;
-    private boolean gameOver = false;
-    private int difficulty;
-    private EnemyController controller;
+	public GamePanel() {
+		setFocusable(true);
+		addKeyListener(this);
+		SwingUtilities.invokeLater(this::requestFocusInWindow);
 
-    private static int bestScore = 0;
-    private static final String HIGHSCORE_FILE = "highscore.dat";
+		loadHighScore();
 
-    public GamePanel() {
-        setFocusable(true);
-        addKeyListener(this);
-        SwingUtilities.invokeLater(this::requestFocusInWindow);
+		difficulty = 1;
 
-        loadHighScore();
+		gameState = new GameState();
 
-        difficulty = 1;
+		controller = new EnemyController();
 
-        gameState = new GameState();
+		running = true;
 
-        controller = new EnemyController();
+		gameState.spawn(new Player(GameConfig.SCREEN_WIDTH / 2, 750));
+		spawnShields();
 
-        running = true;
+		gameThread = new Thread(this);
+		gameThread.start();
 
-        gameState.spawn(new Player(GameConfig.SCREEN_WIDTH / 2, 750));
-        spawnShields();
+		bgm = new BackgroundMusicPlayer("music.wav");
+		bgm.play();
+	}
 
-        gameThread = new Thread(this);
-        gameThread.start();
-    }
+	@Override
+	public void run() {
+		final int TARGET_FPS = 60;
+		final double TIME_PER_FRAME = 1_000_000_000.0 / TARGET_FPS;
 
-    @Override
-    public void run() {
+		long lastTime = System.nanoTime();
+		double delta = 0;
 
-        final int TARGET_FPS = 60;
-        final double TIME_PER_FRAME = 1_000_000_000.0 / TARGET_FPS;
+		while (running) {
 
-        long lastTime = System.nanoTime();
-        double delta = 0;
+			long now = System.nanoTime();
+			delta += (now - lastTime) / TIME_PER_FRAME;
+			lastTime = now;
 
-        while (running) {
+			while (delta >= 1) {
+				updateGame();
+				delta--;
+			}
 
-            long now = System.nanoTime();
-            delta += (now - lastTime) / TIME_PER_FRAME;
-            lastTime = now;
+			repaint();
+		}
+	}
 
-            while (delta >= 1) {
-                updateGame();
-                delta--;
-            }
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
 
-            repaint();
-        }
-    }
+		g.drawImage(ResourceCache.BACKGROUND, 0, 0, getWidth(), getHeight(), null);
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+		for (Entity e : gameState.getEntities()) {
+			g.drawImage(e.getSprite(), e.getX(), e.getY(), null);
 
-        g.drawImage(ResourceCache.BACKGROUND, 0, 0, getWidth(), getHeight(), null);
+			if (GameConfig.SHOW_HITBOXES) {
+				Rectangle hitbox = e.getHitbox();
+				g.setColor(Color.red);
+				g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+			}
 
-        for (Entity e : gameState.getEntities()) {
-            g.drawImage(e.getSprite(), e.getX(), e.getY(), null);
+		}
 
-            // Colored hitbox
-            if (GameConfig.SHOW_HITBOXES) {
-                Rectangle hitbox = e.getHitbox();
-                g.setColor(Color.red);
-                g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-            }
+		if (gameOver) {
+			g.setColor(Color.RED);
 
-        }
+			g.setFont(g.getFont().deriveFont(java.awt.Font.BOLD, 80f));
+			g.drawString("GAME OVER", getWidth() / 2 - 250, getHeight() / 2);
 
-        if (gameOver) {
+			g.setFont(g.getFont().deriveFont(java.awt.Font.PLAIN, 40f));
+			g.drawString("Press R to restart", getWidth() / 2 - 180, getHeight() / 2 + 40);
+		}
 
-            g.setColor(Color.RED);
+		g.setColor(Color.BLACK);
+		g.setFont(g.getFont().deriveFont(20f));
+		g.drawString("Score: " + gameState.getScore(), 20, 30);
+		g.drawString("Best score: " + bestScore, 20, 60);
+	}
 
-            g.setFont(g.getFont().deriveFont(java.awt.Font.BOLD, 80f));
-            g.drawString("GAME OVER", getWidth() / 2 - 250, getHeight() / 2);
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (GameConfig.PRINT_KEYBOARD_INPUT) {
+			System.out.println("KEY: " + e.getKeyCode());
+		}
 
-            g.setFont(g.getFont().deriveFont(java.awt.Font.PLAIN, 40f));
-            g.drawString("Press R to restart", getWidth() / 2 - 180, getHeight() / 2 + 40);
-        }
+		if (gameOver) {
+			if (e.getKeyCode() == KeyEvent.VK_R) {
+				restartGame();
+			}
+			return;
+		}
 
-        g.setColor(Color.BLACK);
-        g.setFont(g.getFont().deriveFont(20f));
-        g.drawString("Score: " + gameState.getScore(), 20, 30);
-        g.drawString("Best score: " + bestScore, 20, 60);
-    }
+		if (GameConfig.PRINT_KEYBOARD_INPUT) {
+			System.out.println("KEY: " + e.getKeyCode());
+		}
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (GameConfig.PRINT_KEYBOARD_INPUT) {
-            System.out.println("KEY: " + e.getKeyCode());
-        }
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_A, KeyEvent.VK_LEFT ->
+				gameState.setMoveLeft(true);
+			case KeyEvent.VK_D, KeyEvent.VK_RIGHT ->
+				gameState.setMoveRight(true);
+			case KeyEvent.VK_SPACE ->
+				gameState.setShoot(true);
+			case KeyEvent.VK_M -> {
+				if (bgm.isPlaying())
+					bgm.stop();
+				else
+					bgm.play();
+			}
+		}
+	}
 
-        if (gameOver) {
-            if (e.getKeyCode() == KeyEvent.VK_R) {
-                restartGame();
-            }
-            return;
-        }
+	@Override
+	public void keyReleased(KeyEvent e) {
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_A, KeyEvent.VK_LEFT ->
+				gameState.setMoveLeft(false);
+			case KeyEvent.VK_D, KeyEvent.VK_RIGHT ->
+				gameState.setMoveRight(false);
+			case KeyEvent.VK_SPACE ->
+				gameState.setShoot(false);
+		}
+	}
 
-        if (GameConfig.PRINT_KEYBOARD_INPUT) {
-            System.out.println("KEY: " + e.getKeyCode());
-        }
+	private void updateGame() {
+		gameState.commit();
 
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_A, KeyEvent.VK_LEFT ->
-                gameState.setMoveLeft(true);
-            case KeyEvent.VK_D, KeyEvent.VK_RIGHT ->
-                gameState.setMoveRight(true);
-            case KeyEvent.VK_SPACE ->
-                gameState.setShoot(true);
-        }
-    }
+		boolean playerAlive = false;
+		boolean enemiesDead = true;
 
-    @Override
-    public void keyReleased(KeyEvent e) {
+		controller.update(gameState);
 
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_A, KeyEvent.VK_LEFT ->
-                gameState.setMoveLeft(false);
-            case KeyEvent.VK_D, KeyEvent.VK_RIGHT ->
-                gameState.setMoveRight(false);
-            case KeyEvent.VK_SPACE ->
-                gameState.setShoot(false);
-        }
-    }
+		for (Entity e : gameState.getEntities()) {
+			if (e instanceof Player) {
+				playerAlive = true;
+			}
 
-    private void updateGame() {
-        gameState.commit();
+			if (e instanceof Enemy) {
+				enemiesDead = false;
+			}
 
-        boolean playerAlive = false;
-        boolean enemiesDead = true;
+			e.update(gameState);
+		}
 
-        controller.update(gameState);
+		if (enemiesDead) {
+			switch (difficulty) {
+				case 1 ->
+					EnemySpawner.formation1(gameState);
+				case 2 ->
+					EnemySpawner.formation2(gameState);
+				case 3 ->
+					EnemySpawner.formation3(gameState);
+				case 4 ->
+					EnemySpawner.formation4(gameState);
+				default ->
+					EnemySpawner.formation5(gameState);
+			}
 
-        for (Entity e : gameState.getEntities()) {
-            if (e instanceof Player) {
-                playerAlive = true;
-            }
+			difficulty++;
+		}
 
-            if (e instanceof Enemy) {
-                enemiesDead = false;
-            }
+		gameState.commit();
 
-            e.update(gameState);
-        }
+		if (!playerAlive) {
+			gameOver();
+		}
+	}
 
-        if (enemiesDead) {
-            switch (difficulty) {
-                case 1 ->
-                    EnemySpawner.formation1(gameState);
-                case 2 ->
-                    EnemySpawner.formation2(gameState);
-                case 3 ->
-                    EnemySpawner.formation3(gameState);
-                case 4 ->
-                    EnemySpawner.formation4(gameState);
-                default ->
-                    EnemySpawner.formation5(gameState);
-            }
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
 
-            difficulty++;
-        }
+	private void loadHighScore() {
+		try (DataInputStream in = new DataInputStream(new FileInputStream(HIGHSCORE_FILE))) {
+			bestScore = in.readInt();
+		} catch (IOException e) {
+			bestScore = 0;
+		}
+	}
 
-        gameState.commit();
+	private void saveHighScore() {
+		try (DataOutputStream out = new DataOutputStream(new FileOutputStream(HIGHSCORE_FILE))) {
+			out.writeInt(bestScore);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-        if (!playerAlive) {
-            gameOver();
-        }
-    }
+	private void gameOver() {
+		gameOver = true;
+		running = false;
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
+		if (gameState.getScore() > bestScore) {
+			bestScore = gameState.getScore();
+			saveHighScore();
+		}
+	}
 
-    private void loadHighScore() {
-        try (DataInputStream in = new DataInputStream(new FileInputStream(HIGHSCORE_FILE))) {
-            bestScore = in.readInt();
-        } catch (IOException e) {
-            bestScore = 0;
-        }
-    }
+	private void spawnShields() {
+		int numShields = 4;
+		int shieldSpacing = GameConfig.SCREEN_WIDTH / (numShields + 1);
+		int shieldY = 500;
 
-    private void saveHighScore() {
-        try (DataOutputStream out = new DataOutputStream(new FileOutputStream(HIGHSCORE_FILE))) {
-            out.writeInt(bestScore);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		for (int i = 1; i <= numShields; i++) {
+			int shieldX = i * shieldSpacing - ResourceCache.SHIELD.getWidth();
+			shieldX += 160;
+			Shield shield = new Shield(shieldX, shieldY);
+			gameState.spawn(shield);
+		}
+	}
 
-    private void gameOver() {
-        gameOver = true;
-        running = false;
+	private void restartGame() {
+		gameState = new GameState();
+		controller = new EnemyController();
 
-        if (gameState.getScore() > bestScore) {
-            bestScore = gameState.getScore();
-            saveHighScore();
-        }
-    }
+		difficulty = 1;
+		gameOver = false;
+		running = true;
 
-    private void spawnShields() {
-        int numShields = 4;
-        int shieldSpacing = GameConfig.SCREEN_WIDTH / (numShields + 1);
-        int shieldY = 500;
+		gameState.spawn(new Player(GameConfig.SCREEN_WIDTH / 2, 750));
+		spawnShields();
 
-        for (int i = 1; i <= numShields; i++) {
-            int shieldX = i * shieldSpacing - ResourceCache.SHIELD.getWidth();
-            shieldX += 160;
-            Shield shield = new Shield(shieldX, shieldY);
-            gameState.spawn(shield);
-        }
-    }
-
-    private void restartGame() {
-
-        gameState = new GameState();
-        controller = new EnemyController();
-
-        difficulty = 1;
-        gameOver = false;
-        running = true;
-
-        gameState.spawn(new Player(GameConfig.SCREEN_WIDTH / 2, 750));
-        spawnShields();
-
-        gameThread = new Thread(this);
-        gameThread.start();
-    }
+		gameThread = new Thread(this);
+		gameThread.start();
+	}
 }
