@@ -1,6 +1,5 @@
 package io.github.T1n3core.trash_game;
 
-import java.io.File;
 import java.io.IOException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.LineUnavailableException;
@@ -40,7 +39,8 @@ public class BackgroundMusicPlayer {
 
 	private void playLoop() {
 		while (!stopRequested) {
-			try (AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(filePath))) {
+			try (AudioInputStream audioIn = AudioSystem
+					.getAudioInputStream(getClass().getClassLoader().getResource(filePath))) {
 				AudioFormat format = audioIn.getFormat();
 				DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
 
