@@ -10,6 +10,9 @@ import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -19,6 +22,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	private GameState gameState;
 	private boolean gameOver = false;
 	private int difficulty;
+	private final List<ScorePopup> scorePopups = new ArrayList<>();
 	private EnemyController controller;
 	private BackgroundMusicPlayer bgm;
 	private static int bestScore = 0;
@@ -87,6 +91,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 			}
 
+		}
+
+		Iterator<ScorePopup> iter = scorePopups.iterator();
+		while (iter.hasNext()) {
+			ScorePopup popup = iter.next();
+			popup.draw(g);
+			if (popup.update()) {
+				iter.remove();
+			}
 		}
 
 		if (gameOver) {
@@ -187,6 +200,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			difficulty++;
 		}
 
+		gameState.getPopupSpawnQueue().forEach(s -> scorePopups.add(s));
 		gameState.commit();
 
 		if (!playerAlive) {
