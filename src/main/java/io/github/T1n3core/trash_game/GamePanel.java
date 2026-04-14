@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 	private Thread gameThread;
+	private ScreenState screenState;
 	private boolean running;
 	private GameState gameState;
 	private boolean gameOver = false;
@@ -33,14 +34,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		addKeyListener(this);
 		SwingUtilities.invokeLater(this::requestFocusInWindow);
 
+		screenState = ScreenState.MENU;
+
 		loadHighScore();
 
-		difficulty = 1;
+		bgm = new BackgroundMusicPlayer("music.wav");
+		bgm.play();
+	}
 
+	private void startGame(int startingDifficulty) {
 		gameState = new GameState();
-
 		controller = new EnemyController();
 
+		difficulty = startingDifficulty;
+		gameOver = false;
 		running = true;
 
 		gameState.spawn(new Player(GameConfig.SCREEN_WIDTH / 2, 750));
@@ -49,8 +56,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		gameThread = new Thread(this);
 		gameThread.start();
 
-		bgm = new BackgroundMusicPlayer("music.wav");
-		bgm.play();
+		screenState = ScreenState.PLAYING;
 	}
 
 	@Override
@@ -80,7 +86,62 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		g.drawImage(ResourceCache.BACKGROUND, 0, 0, getWidth(), getHeight(), null);
+		switch (screenState) {
+			case MENU -> drawMenu(g);
+			case LEVEL_SELECT -> drawLevelSelect(g);
+			case CREDITS -> drawCredits(g);
+			case PLAYING -> drawGame(g);
+		}
+	}
+
+	private void drawMenu(Graphics g) {
+		g.drawImage(ResourceCache.BACKGROUND_MENU, 0, 0, getWidth(), getHeight(), null);
+
+		g.setColor(Color.WHITE);
+		g.setFont(g.getFont().deriveFont(80f));
+		g.drawString("TRASH GAME", getWidth() / 2 - 250, 200);
+
+		g.setFont(g.getFont().deriveFont(40f));
+		g.drawString("1 - Play", getWidth() / 2 - 100, 400);
+		g.drawString("2 - Credits", getWidth() / 2 - 100, 460);
+	}
+
+	private void drawLevelSelect(Graphics g) {
+		g.drawImage(ResourceCache.BACKGROUND_MENU, 0, 0, getWidth(), getHeight(), null);
+
+		g.setColor(Color.WHITE);
+		g.setFont(g.getFont().deriveFont(60f));
+		g.drawString("Select Difficulty", getWidth() / 2 - 250, 200);
+
+		g.setFont(g.getFont().deriveFont(40f));
+		g.drawString("1 - Easy", getWidth() / 2 - 100, 350);
+		g.drawString("2 - Medium", getWidth() / 2 - 100, 400);
+		g.drawString("3 - Hard", getWidth() / 2 - 100, 450);
+		g.drawString("4 - Insane", getWidth() / 2 - 100, 500);
+
+		g.drawString("ESC - Back", getWidth() / 2 - 100, 600);
+	}
+
+	private void drawCredits(Graphics g) {
+		g.drawImage(ResourceCache.BACKGROUND_MENU, 0, 0, getWidth(), getHeight(), null);
+
+		g.setColor(Color.WHITE);
+		g.setFont(g.getFont().deriveFont(50f));
+		g.drawString("Credits", getWidth() / 2 - 100, 200);
+
+		g.setFont(g.getFont().deriveFont(30f));
+		g.drawString("Game by T1n3core", getWidth() / 2 - 150, 300);
+		g.drawString("ESC - Back", getWidth() / 2 - 100, 500);
+	}
+
+	private void drawGame(Graphics g) {
+		switch (difficulty) {
+			case 1 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_1, 0, 0, getWidth(), getHeight(), null);
+			case 2 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_2, 0, 0, getWidth(), getHeight(), null);
+			case 3 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_3, 0, 0, getWidth(), getHeight(), null);
+			case 4 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_4, 0, 0, getWidth(), getHeight(), null);
+			default -> g.drawImage(ResourceCache.BACKGROUND_DIFF_5, 0, 0, getWidth(), getHeight(), null);
+		}
 
 		for (Entity e : gameState.getEntities()) {
 			g.drawImage(e.getSprite(), e.getX(), e.getY(), null);
@@ -120,33 +181,63 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		int key = e.getKeyCode();
 		if (GameConfig.PRINT_KEYBOARD_INPUT) {
-			System.out.println("KEY: " + e.getKeyCode());
+			System.out.println("KEY: " + key);
 		}
 
-		if (gameOver) {
-			if (e.getKeyCode() == KeyEvent.VK_R) {
-				restartGame();
+		switch (screenState) {
+			case MENU -> {
+				if (key == KeyEvent.VK_1) {
+					screenState = ScreenState.LEVEL_SELECT;
+				} else if (key == KeyEvent.VK_2) {
+					screenState = ScreenState.CREDITS;
+				}
 			}
-			return;
-		}
 
-		if (GameConfig.PRINT_KEYBOARD_INPUT) {
-			System.out.println("KEY: " + e.getKeyCode());
-		}
+			case LEVEL_SELECT -> {
+				if (key == KeyEvent.VK_1)
+					startGame(1);
+				if (key == KeyEvent.VK_2)
+					startGame(2);
+				if (key == KeyEvent.VK_3)
+					startGame(3);
+				if (key == KeyEvent.VK_4)
+					startGame(4);
 
-		switch (e.getKeyCode()) {
-			case KeyEvent.VK_A, KeyEvent.VK_LEFT ->
-				gameState.setMoveLeft(true);
-			case KeyEvent.VK_D, KeyEvent.VK_RIGHT ->
-				gameState.setMoveRight(true);
-			case KeyEvent.VK_SPACE ->
-				gameState.setShoot(true);
-			case KeyEvent.VK_M -> {
-				if (bgm.isPlaying())
-					bgm.stop();
-				else
-					bgm.play();
+				if (key == KeyEvent.VK_ESCAPE) {
+					screenState = ScreenState.MENU;
+				}
+			}
+
+			case CREDITS -> {
+				if (key == KeyEvent.VK_ESCAPE) {
+					screenState = ScreenState.MENU;
+				}
+			}
+
+			case PLAYING -> {
+				if (gameOver) {
+					if (e.getKeyCode() == KeyEvent.VK_R) {
+						restartGame();
+					}
+					return;
+				}
+
+				switch (e.getKeyCode()) {
+					case KeyEvent.VK_A, KeyEvent.VK_LEFT ->
+						gameState.setMoveLeft(true);
+					case KeyEvent.VK_D, KeyEvent.VK_RIGHT ->
+						gameState.setMoveRight(true);
+					case KeyEvent.VK_SPACE ->
+						gameState.setShoot(true);
+					case KeyEvent.VK_M -> {
+						if (bgm.isPlaying())
+							bgm.stop();
+						else
+							bgm.play();
+					}
+				}
 			}
 		}
 	}
