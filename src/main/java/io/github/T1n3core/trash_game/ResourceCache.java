@@ -20,6 +20,7 @@ public final class ResourceCache {
 	public static final BufferedImage ICON;
 	public static final BufferedImage SHIELD;
 	public static final BufferedImage LASER;
+	public static final BufferedImage HEART;
 
 	static {
 		try {
@@ -29,10 +30,16 @@ public final class ResourceCache {
 			PLASTIC = load("plastic.png");
 			PLANE = load("plane.png");
 			SEED = load("seed.png");
-			BACKGROUND_DIFF_1 = load("background.png");
+			BACKGROUND_MENU = load("background.png");
+			BACKGROUND_DIFF_1 = load("background1.png");
+			BACKGROUND_DIFF_2 = load("background2.png");
+			BACKGROUND_DIFF_3 = load("background3.png");
+			BACKGROUND_DIFF_4 = load("background4.png");
+			BACKGROUND_DIFF_5 = load("background5.png");
 			ICON = load("game_icon.png");
 			SHIELD = load("shield.png");
 			LASER = load("laser.png");
+			HEART = load("heart.png");
 		} catch (IOException e) {
 			throw new RuntimeException("Failed to load resources", e);
 		}

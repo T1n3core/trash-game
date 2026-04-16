@@ -152,6 +152,17 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 				g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 			}
 
+			if (e instanceof Player p) {
+				int heartSize = 40;
+				int spacing = 10;
+
+				for (int i = 0; i < p.lives(); i++) {
+					int x = getWidth() - (i + 1) * (heartSize + spacing);
+					int y = 20;
+
+					g.drawImage(ResourceCache.HEART, x, y, heartSize, heartSize, null);
+				}
+			}
 		}
 
 		Iterator<ScorePopup> iter = scorePopups.iterator();

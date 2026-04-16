@@ -23,7 +23,8 @@ public class Enemy extends Entity implements Movable {
 	}
 
 	@Override
-	public void move(GameState state) {}
+	public void move(GameState state) {
+	}
 
 	@Override
 	public Team team() {
@@ -38,16 +39,14 @@ public class Enemy extends Entity implements Movable {
 		}
 	}
 
-	private  void checkGameOverCollision(GameState state) {
+	private void checkGameOverCollision(GameState state) {
 		for (Entity e : state.getEntities()) {
-			
-			// Enemy touches shield
+
 			if (e instanceof Shield && getHitbox().intersects(e.getHitbox())) {
 				killPlayer(state);
 				return;
 			}
 
-			// Enemy touches player
 			if (e instanceof Player && getHitbox().intersects(e.getHitbox())) {
 				state.kill(e);
 				return;

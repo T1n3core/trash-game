@@ -3,6 +3,10 @@ package io.github.T1n3core.trash_game;
 public class Player extends Entity implements Movable, Shoots {
 	private int movement;
 	private int firingCooldown;
+	private int lives;
+	private int invulFrames;
+	private static final int MAX_LIVES = 3;
+	private static final int INVUL_WINDOW = 100;
 	private static final int MOVEMENT_SPEED = 10;
 	public static final Team team = Team.FRIENDLY;
 
@@ -10,6 +14,8 @@ public class Player extends Entity implements Movable, Shoots {
 		super(x, y, ResourceCache.PLAYER.getWidth(), ResourceCache.PLAYER.getHeight(), ResourceCache.PLAYER);
 		movement = 0;
 		firingCooldown = 0;
+		lives = MAX_LIVES;
+		invulFrames = INVUL_WINDOW;
 		shrinkHitbox(160, 80);
 		offsetHitbox(80, 0);
 	}
@@ -19,6 +25,8 @@ public class Player extends Entity implements Movable, Shoots {
 		handleInput(state);
 		move(state);
 		shoot(state);
+		if (invulFrames > 0)
+			invulFrames--;
 		movement = 0;
 		firingCooldown--;
 	}
@@ -61,6 +69,21 @@ public class Player extends Entity implements Movable, Shoots {
 
 	@Override
 	public Team team() {
-		 return team;
+		return team;
+	}
+
+	public void damage(GameState state) {
+		if (invulFrames > 0)
+			return;
+
+		lives--;
+		invulFrames = INVUL_WINDOW;
+
+		if (lives <= 0)
+			state.kill(this);
+	}
+
+	public int lives() {
+		return lives;
 	}
 }
