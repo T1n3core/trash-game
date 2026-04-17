@@ -138,10 +138,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	private void drawGame(Graphics g) {
 		switch (difficulty) {
 			case 1 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_1, 0, 0, getWidth(), getHeight(), null);
-			case 2 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_2, 0, 0, getWidth(), getHeight(), null);
-			case 3 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_3, 0, 0, getWidth(), getHeight(), null);
-			case 4 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_4, 0, 0, getWidth(), getHeight(), null);
-			case 5 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_5, 0, 0, getWidth(), getHeight(), null);
+			case 2 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_1, 0, 0, getWidth(), getHeight(), null);
+			case 3 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_2, 0, 0, getWidth(), getHeight(), null);
+			case 4 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_3, 0, 0, getWidth(), getHeight(), null);
+			case 5 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_4, 0, 0, getWidth(), getHeight(), null);
+			case 6 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_5, 0, 0, getWidth(), getHeight(), null);
 			default -> g.drawImage(ResourceCache.BACKGROUND_DIFF_5, 0, 0, getWidth(), getHeight(), null);
 		}
 
@@ -199,6 +200,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			System.out.println("KEY: " + key);
 		}
 
+		if (key == KeyEvent.VK_M) {
+			if (bgm.isPlaying())
+				bgm.stop();
+			else
+				bgm.play();
+		}
+
 		switch (screenState) {
 			case MENU -> {
 				if (key == KeyEvent.VK_1) {
@@ -232,29 +240,32 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			}
 
 			case PLAYING -> {
+				if (key == KeyEvent.VK_ESCAPE) {
+					running = false;
+					gameOver = false;
+					screenState = ScreenState.LEVEL_SELECT;
+					return;
+				}
+
 				if (gameOver) {
-					if (e.getKeyCode() == KeyEvent.VK_R) {
+					if (key == KeyEvent.VK_R) {
 						restartGame();
 					}
 					return;
 				}
 
-				switch (e.getKeyCode()) {
+				switch (key) {
 					case KeyEvent.VK_A, KeyEvent.VK_LEFT ->
 						gameState.setMoveLeft(true);
 					case KeyEvent.VK_D, KeyEvent.VK_RIGHT ->
 						gameState.setMoveRight(true);
 					case KeyEvent.VK_SPACE ->
 						gameState.setShoot(true);
-					case KeyEvent.VK_M -> {
-						if (bgm.isPlaying())
-							bgm.stop();
-						else
-							bgm.play();
-					}
 				}
 			}
 		}
+
+		repaint();
 	}
 
 	@Override
@@ -267,8 +278,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			case KeyEvent.VK_SPACE ->
 				gameState.setShoot(false);
 		}
-
-		repaint();
 	}
 
 	private void updateGame() {
