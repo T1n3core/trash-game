@@ -117,9 +117,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 		g.drawString("1 - Easy", getWidth() / 2 - 100, 350);
 		g.drawString("2 - Medium", getWidth() / 2 - 100, 400);
 		g.drawString("3 - Hard", getWidth() / 2 - 100, 450);
-		g.drawString("4 - Insane", getWidth() / 2 - 100, 500);
+		g.drawString("4 - Advanced", getWidth() / 2 - 100, 500);
+		g.drawString("5 - Expert", getWidth() / 2 - 100, 550);
 
-		g.drawString("ESC - Back", getWidth() / 2 - 100, 600);
+		g.drawString("ESC - Back", getWidth() / 2 - 100, 650);
 	}
 
 	private void drawCredits(Graphics g) {
@@ -140,6 +141,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			case 2 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_2, 0, 0, getWidth(), getHeight(), null);
 			case 3 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_3, 0, 0, getWidth(), getHeight(), null);
 			case 4 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_4, 0, 0, getWidth(), getHeight(), null);
+			case 5 -> g.drawImage(ResourceCache.BACKGROUND_DIFF_5, 0, 0, getWidth(), getHeight(), null);
 			default -> g.drawImage(ResourceCache.BACKGROUND_DIFF_5, 0, 0, getWidth(), getHeight(), null);
 		}
 
@@ -215,6 +217,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 					startGame(3);
 				if (key == KeyEvent.VK_4)
 					startGame(4);
+				if (key == KeyEvent.VK_5)
+					startGame(5);
 
 				if (key == KeyEvent.VK_ESCAPE) {
 					screenState = ScreenState.MENU;
@@ -263,6 +267,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 			case KeyEvent.VK_SPACE ->
 				gameState.setShoot(false);
 		}
+
+		repaint();
 	}
 
 	private void updateGame() {
@@ -287,16 +293,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 
 		if (enemiesDead) {
 			switch (difficulty) {
-				case 1 ->
-					EnemySpawner.formation1(gameState);
-				case 2 ->
-					EnemySpawner.formation2(gameState);
-				case 3 ->
-					EnemySpawner.formation3(gameState);
-				case 4 ->
-					EnemySpawner.formation4(gameState);
-				default ->
-					EnemySpawner.formation5(gameState);
+				case 1 -> EnemySpawner.formation1(gameState);
+				case 2 -> EnemySpawner.formation2(gameState);
+				case 3 -> EnemySpawner.formation3(gameState);
+				case 4 -> EnemySpawner.formation4(gameState);
+				case 5 -> EnemySpawner.formation5(gameState);
+				default -> EnemySpawner.formation5(gameState);
 			}
 
 			difficulty++;
